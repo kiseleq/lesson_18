@@ -1,5 +1,6 @@
 window.addEventListener('DOMContentLoaded', function(){
     'use strict';
+    let check = 0;
 
     //  Timer
     function countTimer (deadline){
@@ -65,9 +66,6 @@ window.addEventListener('DOMContentLoaded', function(){
                     timerSeconds.textContent = timer.seconds;
                 }
                 
-
-                // timerMinutes.textContent = timer.minutes;
-                // timerSeconds.textContent = timer.seconds;
             } else {
                 timerHours.textContent = '00';
                 timerMinutes.textContent = '00';
@@ -79,6 +77,89 @@ window.addEventListener('DOMContentLoaded', function(){
 
     }
 
-    countTimer ('14 march 2021');
+    countTimer ('15 march 2021');
+
+    
+    //  Меню
+
+    const toggleMenu = () => {
+        const btnMenu = document.querySelector('.menu'),
+            menu = document.querySelector('menu'),
+            closeBtn = document.querySelector('.close-btn'),
+            menuItems = menu.querySelectorAll('ul>li');
+
+
+        const handlerMenu  = () => {
+            const screenWidth = window.screen.width;
+            if (screenWidth < 768) {
+                if (!menu.style.transform  || menu.style.transform === `translate(-100%)`){
+                    menu.style.transform = `translate(0)`;
+                }else {
+                    menu.style.transform = `translate(-100%)`;
+                }
+            } else {
+
+                check++;
+
+                if (check % 2 === 0) {
+
+                    let count2 = 0;
+                    let changeMenuMinus = function () {
+                        count2++;
+                        menu.style.left = -10 * count2 + 'px';
+        
+                        if (count2 < 74) {
+                            setTimeout(changeMenuMinus, 10);
+                        }
+                    };
+                    changeMenuMinus(); 
+
+                }else {
+                    let count1 = 0;
+                    let changeMenuPlus = function () {
+                        count1++;
+                        menu.style.left = 10 * count1 + 'px';
+        
+                        if (count1 < 74) {
+                            setTimeout(changeMenuPlus, 10);
+                        }
+                    };
+                    changeMenuPlus();
+                }
+
+            }
+
+            
+        };
+
+        btnMenu.addEventListener('click', handlerMenu);
+        // btnMenu.addEventListener('click', handlerMenu);
+        closeBtn.addEventListener('click', handlerMenu);
+        menuItems.forEach((elem) => {
+            elem.addEventListener('click', handlerMenu);
+        });
+        
+    };
+
+    toggleMenu();
+    // Pop Up
+
+    const togglePopUp = () => {
+        const popup = document.querySelector('.popup'),
+            popupBtn = document.querySelectorAll('.popup-btn'),
+            popupClose = document.querySelector('.popup-close');
+
+        popupBtn.forEach((elem) => {
+            elem.addEventListener('click', () => {
+                popup.style.display = 'block';
+            });
+        });
+
+        popupClose.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+    };
+
+    togglePopUp();
 
 });
