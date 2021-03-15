@@ -87,6 +87,8 @@ window.addEventListener('DOMContentLoaded', function(){
             menu = document.querySelector('menu'),
             closeBtn = document.querySelector('.close-btn'),
             menuItems = menu.querySelectorAll('ul>li');
+
+            // Функция анимации
             let anim = function (a) {
 
                 check++;
