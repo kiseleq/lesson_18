@@ -87,49 +87,56 @@ window.addEventListener('DOMContentLoaded', function(){
             menu = document.querySelector('menu'),
             closeBtn = document.querySelector('.close-btn'),
             menuItems = menu.querySelectorAll('ul>li');
-
-
-        const handlerMenu  = () => {
-            const screenWidth = window.screen.width;
-            if (screenWidth < 768) {
-                if (!menu.style.transform  || menu.style.transform === `translate(-100%)`){
-                    menu.style.transform = `translate(0)`;
-                }else {
-                    menu.style.transform = `translate(-100%)`;
-                }
-            } else {
+            let anim = function (a) {
 
                 check++;
-
+            
                 if (check % 2 === 0) {
-
+            
                     let count2 = 0;
                     let changeMenuMinus = function () {
                         count2++;
-                        menu.style.left = -10 * count2 + 'px';
-        
+                        menu.style.left = -a * count2 + 'px';
+            
                         if (count2 < 74) {
                             setTimeout(changeMenuMinus, 10);
                         }
                     };
                     changeMenuMinus(); 
-
+            
                 }else {
                     let count1 = 0;
                     let changeMenuPlus = function () {
                         count1++;
-                        menu.style.left = 10 * count1 + 'px';
-        
+                        menu.style.left = a * count1 + 'px';
+            
                         if (count1 < 74) {
                             setTimeout(changeMenuPlus, 10);
                         }
                     };
                     changeMenuPlus();
                 }
-
-            }
-
             
+            };
+            
+
+
+        const handlerMenu  = () => {
+            const screenWidth = window.screen.width;
+            if (screenWidth < 576) {
+                if (!menu.style.transform  || menu.style.transform === `translate(-100%)`){
+                    menu.style.transform = `translate(0)`;
+                }else {
+                    menu.style.transform = `translate(-100%)`;
+                }
+            } else if (screenWidth < 800) {
+                anim(10.5);
+            } else if (screenWidth < 1200) {
+                anim(15);
+            } else {
+                anim(20);
+            }
+                
         };
 
         btnMenu.addEventListener('click', handlerMenu);
@@ -163,3 +170,5 @@ window.addEventListener('DOMContentLoaded', function(){
     togglePopUp();
 
 });
+
+
