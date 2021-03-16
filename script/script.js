@@ -83,93 +83,65 @@ window.addEventListener('DOMContentLoaded', function(){
     //  Меню
 
     const toggleMenu = () => {
-        const btnMenu = document.querySelector('.menu'),
+        const menuBtn = document.querySelector('.menu'),
             menu = document.querySelector('menu'),
-            closeBtn = document.querySelector('.close-btn'),
+            closeBtn = menu.querySelector('.close-btn'),
             menuItems = menu.querySelectorAll('ul>li');
 
-            // Функция анимации
-            let anim = function (a) {
-
-                check++;
-            
-                if (check % 2 === 0) {
-            
-                    let count2 = 0;
-                    let changeMenuMinus = function () {
-                        count2++;
-                        menu.style.left = -a * count2 + 'px';
-            
-                        if (count2 < 74) {
-                            setTimeout(changeMenuMinus, 10);
-                        }
-                    };
-                    changeMenuMinus(); 
-            
-                }else {
-                    let count1 = 0;
-                    let changeMenuPlus = function () {
-                        count1++;
-                        menu.style.left = a * count1 + 'px';
-            
-                        if (count1 < 74) {
-                            setTimeout(changeMenuPlus, 10);
-                        }
-                    };
-                    changeMenuPlus();
-                }
-            
-            };
-            
-
-
-        const handlerMenu  = () => {
-            const screenWidth = window.screen.width;
-            if (screenWidth < 576) {
-                if (!menu.style.transform  || menu.style.transform === `translate(-100%)`){
-                    menu.style.transform = `translate(0)`;
-                }else {
-                    menu.style.transform = `translate(-100%)`;
-                }
-            } else if (screenWidth < 800) {
-                anim(10.5);
-            } else if (screenWidth < 1200) {
-                anim(15);
-            } else {
-                anim(20);
-            }
-                
+        const handlerMenu = () => {
+            menu.classList.toggle('active-menu');
         };
 
-        btnMenu.addEventListener('click', handlerMenu);
-        // btnMenu.addEventListener('click', handlerMenu);
+        menuBtn.addEventListener('click', handlerMenu);
+        menuItems.forEach(item => item.addEventListener('click', handlerMenu));
+
         closeBtn.addEventListener('click', handlerMenu);
-        menuItems.forEach((elem) => {
-            elem.addEventListener('click', handlerMenu);
-        });
-        
+
     };
 
     toggleMenu();
+
+    
     // Pop Up
 
-    const togglePopUp = () => {
+    const togglePopup = () => {
         const popup = document.querySelector('.popup'),
-            popupBtn = document.querySelectorAll('.popup-btn'),
-            popupClose = document.querySelector('.popup-close');
+            popupContent = popup.querySelector('.popup-content'),
+            popupBtns = document.querySelectorAll('.popup-btn'),
+            popupCloseBtn = popup.querySelector('.popup-close');
 
-        popupBtn.forEach((elem) => {
-            elem.addEventListener('click', () => {
+        let count = 0;
+        const animatePopup = () => {
+
+            const animateInterval = requestAnimationFrame(animatePopup);
+            count++;
+
+            if (count < 25) {
+                popupContent.style.top = count * 5 + 'px';
+            } else {
+                count = 0;
+                cancelAnimationFrame(animateInterval);
+            }
+
+        };
+
+        popupBtns.forEach(item => {
+            item.addEventListener('click', () => {
                 popup.style.display = 'block';
+                if (screen.width > 768) {
+                    animatePopup();
+                }
             });
         });
 
-        popupClose.addEventListener('click', () => {
+        popupCloseBtn.addEventListener('click', () => {
             popup.style.display = 'none';
         });
+
+
     };
 
-    togglePopUp();
+    togglePopup();
 
 });
 
