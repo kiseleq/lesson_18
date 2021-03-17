@@ -86,7 +86,7 @@ window.addEventListener('DOMContentLoaded', function(){
         const menuBtn = document.querySelector('.menu'),
             menu = document.querySelector('menu'),
             closeBtn = menu.querySelector('.close-btn'),
-            menuItems = menu.querySelectorAll('ul>li');
+            menuItems = menu.querySelectorAll('li');
 
         const handlerMenu = () => {
             menu.classList.toggle('active-menu');
@@ -95,16 +95,18 @@ window.addEventListener('DOMContentLoaded', function(){
         menu.addEventListener('click', (event) => {
             let target = event.target;
             
-            if (target === menu.closest('.close-btn')) {
+            if (target === closeBtn) {
                 handlerMenu();
                 console.log(11);
-            } else if (target === menu.closest('li')) {
-                handlerMenu();
-                console.log(22);
-            } else {
-                handlerMenu();
             }
 
+           menuItems.forEach((item, index) => {
+
+                if (item === target.closest('li')) {
+                    handlerMenu();
+                }
+
+           });
         });
         menuBtn.addEventListener('click', handlerMenu);
     };
