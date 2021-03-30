@@ -2,6 +2,81 @@ window.addEventListener('DOMContentLoaded', function(){
     'use strict';
     let check = 0;
 
+    // Изменение ввода
+
+    const calculator = () => {
+        const calc = document.getElementById('calc'),
+            connect = document.querySelector('.connect');
+
+        const onlyNumbers = (e) => {
+            const target = e.target;
+            if (target.matches('input')) {
+                target.value = target.value.replace(/\D/, '');
+            }
+        };
+
+        calc.addEventListener('input', onlyNumbers);
+
+        const onlyLetters = (e) => {
+            const target = e.target;
+            if (target.closest('#form2-name')) {
+                target.value = target.value.replace(/[^а-яА-Я -]/, '');
+            } else if (target.closest('#form2-email')) {
+                target.value = target.value.replace(/ +/, '');
+                target.value = target.value.replace(/[^a-zA-Z\@\_\-\~\.\!\*]/, '');
+            } else if (target.closest('#form2-phone')) {
+                target.value = target.value.replace(/[^1-9\(\)]/, '');
+            }
+        };
+
+        const blur = (e) => {
+            console.log(233);
+            const target = e.target;
+            let newMas = [];
+            if (target.closest('#form2-name')) {
+                target.value = target.value.replace(/[\-]+/, '-');
+                let mas = target.value.split(/[\s,\-]+/);
+                mas.forEach((item) => {    
+                    newMas.push(item[0].toUpperCase() + item.substring(1).toLowerCase());
+                });
+
+                newMas = newMas.join(' ');
+                target.value = newMas;
+            } else if (target.closest('#form2-email')) {
+                target.value.trim();
+            }
+        };
+
+        connect.addEventListener('input', onlyLetters);
+        connect.addEventListener('focusout', blur);
+
+
+    };
+
+    calculator();
+
+    // Изменение картинок
+
+    const changeImg = () => {
+        const team = document.querySelector('.command'),
+        photos = document.querySelectorAll('.command__photo');
+
+        photos.forEach((item, index) => {
+            item.addEventListener('mouseenter', () => {
+                item.src = item.dataset.dataImg;
+                item.src = 'images/command/command-'+ (index + 1) + 'a.jpg';
+            });
+
+            item.addEventListener('mouseleave', () => {
+                console.log(1);
+                item.src = item.dataset.dataImgg;
+                item.src = 'images/command/command-'+ (index + 1) + '.jpg';
+            });
+        });
+    };
+
+    changeImg();
+
     //  Timer
     function countTimer (deadline){
         let timerHours = document.querySelector('#timer-hours'),
