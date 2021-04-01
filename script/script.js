@@ -2,10 +2,59 @@ window.addEventListener('DOMContentLoaded', function(){
     'use strict';
     let check = 0;
 
+    // Калькулятор
+
+    const calc = (price = 100) => {
+        const calcBlock = document.querySelector('.calc-block'),
+            calcType = document.querySelector('.calc-type'),
+            calcSquare = document.querySelector('.calc-square'),
+            calcDay = document.querySelector('.calc-day'),
+            calcCount = document.querySelector('.calc-count'),
+            totalValue = document.getElementById('total');
+
+        const countSum = () => {
+            let total = 0,
+            countValue = 1,
+            dayValue = 1;
+
+            const typeValue = calcType.options[calcType.selectedIndex].value,
+            squareValue = +calcSquare.value;
+            
+            if (calcCount.value > 1) {
+                countValue += (calcCount.value - 1) / 10;
+            }
+
+            if (!!calcDay.value && calcDay.value < 5) {
+                dayValue *= 2;
+            } else if (!!calcDay.value && calcDay.value < 10) {
+                dayValue *= 1.5;
+            } 
+
+            if (!!typeValue && !!squareValue) {
+                total = price * typeValue * squareValue * countValue * dayValue;
+            }
+            
+
+            totalValue.textContent = total;
+        };
+
+        calcBlock.addEventListener('change', (event) => {
+            const target = event.target;
+            if (target.matches('.calc-type') || target.matches('.calc-square') ||
+            target.matches('.calc-day') || target.matches('.calc-count')) {
+                countSum();
+            }
+        });
+    };
+
+    calc();
+
     // Изменение ввода
 
     const calculator = () => {
         const calc = document.getElementById('calc'),
+            mainForm = document.querySelector('.main-form'),
+            popUpForm = document.querySelector('.popup'),
             connect = document.querySelector('.connect');
 
         const onlyNumbers = (e) => {
@@ -30,7 +79,7 @@ window.addEventListener('DOMContentLoaded', function(){
         };
 
         const blur = (e) => {
-            console.log(233);
+
             const target = e.target;
             let newMas = [];
             if (target.closest('#form2-name')) {
@@ -47,10 +96,58 @@ window.addEventListener('DOMContentLoaded', function(){
             }
         };
 
+        const blur1 = (e) => {
+
+            const target = e.target;
+            let newMas = [];
+            if (target.closest('.form-name')) {
+                target.value = target.value.replace(/[\-]+/, '-');
+                let mas = target.value.split(/[\s,\-]+/);
+                mas.forEach((item) => {    
+                    newMas.push(item[0].toUpperCase() + item.substring(1).toLowerCase());
+                });
+
+                newMas = newMas.join(' ');
+                target.value = newMas;
+            } else if (target.closest('form-email')) {
+                target.value.trim();
+            }
+        };
+
         connect.addEventListener('input', onlyLetters);
         connect.addEventListener('focusout', blur);
 
+        const checkMainForm = (event) => {
+            const target = event.target;
+            
+            if (target === target.closest('.form-name')) {
+                target.value = target.value.replace(/[^а-яА-Я -]/, '');
+            } else if (target === target.closest('.form-email')) {
+                target.value = target.value.replace(/ +/, '');
+                target.value = target.value.replace(/[^a-zA-Z\@\_\-\~\.\!\*]/, '');
+            } else if (target === target.closest('.form-phone')) {
+                target.value = target.value.replace(/[^1-9\(\)]/, '');
+            } else {return;}
+        };
 
+        mainForm.addEventListener('input', checkMainForm);
+        mainForm.addEventListener('focusout', blur1);
+
+        const popUpChange = (event) => {
+            const target = event.target;
+
+            if (target === target.closest('.form-name')) {
+                target.value = target.value.replace(/[^а-яА-Я -]/, '');
+            } else if (target === target.closest('.form-email')) {
+                target.value = target.value.replace(/ +/, '');
+                target.value = target.value.replace(/[^a-zA-Z\@\_\-\~\.\!\*]/, '');
+            } else if (target === target.closest('.form-phone')) {
+                target.value = target.value.replace(/[^1-9\(\)]/, '');
+            } else {return;}
+        };
+
+        popUpForm.addEventListener('input',popUpChange);
+        popUpForm.addEventListener('focusout', blur1);
     };
 
     calculator();
