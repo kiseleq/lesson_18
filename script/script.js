@@ -2,6 +2,7 @@ window.addEventListener('DOMContentLoaded', function(){
     'use strict';
     let check = 0;
 
+
     // Калькулятор
 
     const calc = (price = 100) => {
@@ -31,7 +32,7 @@ window.addEventListener('DOMContentLoaded', function(){
             } 
 
             if (!!typeValue && !!squareValue) {
-                total = price * typeValue * squareValue * countValue * dayValue;
+                total = Math.floor(price * typeValue * squareValue * countValue * dayValue);
             }
             
 
@@ -69,12 +70,14 @@ window.addEventListener('DOMContentLoaded', function(){
         const onlyLetters = (e) => {
             const target = e.target;
             if (target.closest('#form2-name')) {
-                target.value = target.value.replace(/[^а-яА-Я -]/, '');
+                target.value = target.value.replace(/[^а-яА-Я ]/, '');
             } else if (target.closest('#form2-email')) {
                 target.value = target.value.replace(/ +/, '');
                 target.value = target.value.replace(/[^a-zA-Z\@\_\-\~\.\!\*]/, '');
             } else if (target.closest('#form2-phone')) {
-                target.value = target.value.replace(/[^1-9\(\)]/, '');
+                target.value = target.value.replace(/[^1-9\+{1}]/, '');
+            } else if (target.closest('#form2-message')) {
+                target.value = target.value.replace(/[^а-яА-Я1-9\,\.\?\! ]/, '');
             }
         };
 
@@ -82,7 +85,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
             const target = e.target;
             let newMas = [];
-            if (target.closest('#form2-name')) {
+            if (target.closest('#form-name')) {
                 target.value = target.value.replace(/[\-]+/, '-');
                 let mas = target.value.split(/[\s,\-]+/);
                 mas.forEach((item) => {    
@@ -91,7 +94,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
                 newMas = newMas.join(' ');
                 target.value = newMas;
-            } else if (target.closest('#form2-email')) {
+            } else if (target.closest('#form-email')) {
                 target.value.trim();
             }
         };
@@ -121,13 +124,15 @@ window.addEventListener('DOMContentLoaded', function(){
             const target = event.target;
             
             if (target === target.closest('.form-name')) {
-                target.value = target.value.replace(/[^а-яА-Я -]/, '');
+                target.value = target.value.replace(/[^а-яА-Я ]/, '');
             } else if (target === target.closest('.form-email')) {
                 target.value = target.value.replace(/ +/, '');
                 target.value = target.value.replace(/[^a-zA-Z\@\_\-\~\.\!\*]/, '');
             } else if (target === target.closest('.form-phone')) {
-                target.value = target.value.replace(/[^1-9\(\)]/, '');
-            } else {return;}
+                target.value = target.value.replace(/[^1-9\+{1}]/, '');
+            } else {
+                return;
+            }
         };
 
         mainForm.addEventListener('input', checkMainForm);
@@ -137,12 +142,12 @@ window.addEventListener('DOMContentLoaded', function(){
             const target = event.target;
 
             if (target === target.closest('.form-name')) {
-                target.value = target.value.replace(/[^а-яА-Я -]/, '');
+                target.value = target.value.replace(/[^а-яА-Я ]/, '');
             } else if (target === target.closest('.form-email')) {
                 target.value = target.value.replace(/ +/, '');
                 target.value = target.value.replace(/[^a-zA-Z\@\_\-\~\.\!\*]/, '');
             } else if (target === target.closest('.form-phone')) {
-                target.value = target.value.replace(/[^1-9\(\)]/, '');
+                target.value = target.value.replace(/[^1-9\+]/, '');
             } else {return;}
         };
 
@@ -496,6 +501,81 @@ window.addEventListener('DOMContentLoaded', function(){
     };
 
     slider();
+
+    // send-ajax-form
+
+    const sendForm = () => {
+        const clearInputs = () => {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach((item) => {
+                item.value = '';
+            });
+        };
+
+        const errorMessage = 'Что-то пошло не так...',
+            loadMessage = 'Загрузка...',
+            successMessage = 'Спасибо! Мы скоро с вами свяжемся';
+
+        const form = document.getElementById('form1'),
+            form2 = document.getElementById('form2'),
+            form3 = document.getElementById('form3');
+
+        const statusMessage = document.createElement('div');
+        statusMessage.style.cssText = 'font-size: 2rem;';
+        form.appendChild(statusMessage);
+
+        const func = () => {
+            event.preventDefault();
+            form.appendChild(statusMessage);
+
+            const formData = new FormData(form);
+            let body = {};
+
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+
+            const postData = (body, outputData, errorData) => {
+
+                const request = new XMLHttpRequest();
+                request.addEventListener('readystatechange', () => {
+                    statusMessage.textContent = loadMessage;
+    
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+    
+                    if (request.status === 200) {
+                        outputData();
+                    } else {
+                        errorData(request.status); 
+                    }
+                });
+    
+                request.open('POST', './server.php');
+                request.setRequestHeader('Content-Type', 'application/json');
+    
+                request.send(JSON.stringify(body));
+                clearInputs();
+            };
+
+            postData(body, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+        };
+
+        form.addEventListener('submit', func(event));
+        form2.addEventListener('submit', func(event));
+        form3.addEventListener('submit', func(event));
+
+        
+        
+    };
+
+    sendForm();
 
 });
 
