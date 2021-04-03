@@ -567,16 +567,137 @@ window.addEventListener('DOMContentLoaded', function(){
             });
         };
 
-        form.addEventListener('submit', func(event));
-        form2.addEventListener('submit', func(event));
-        form3.addEventListener('submit', func(event));
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form.appendChild(statusMessage);
 
-        
-        
+            const formData = new FormData(form);
+            let body = {};
+
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+
+            const postData = (body, outputData, errorData) => {
+
+                const request = new XMLHttpRequest();
+                request.addEventListener('readystatechange', () => {
+                    statusMessage.textContent = loadMessage;
+    
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+    
+                    if (request.status === 200) {
+                        outputData();
+                    } else {
+                        errorData(request.status); 
+                    }
+                });
+    
+                request.open('POST', './server.php');
+                request.setRequestHeader('Content-Type', 'application/json');
+    
+                request.send(JSON.stringify(body));
+                clearInputs();
+            };
+
+            postData(body, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+        });
+        form2.addEventListener('submit', () => {
+            event.preventDefault();
+            form.appendChild(statusMessage);
+
+            const formData = new FormData(form);
+            let body = {};
+
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+
+            const postData = (body, outputData, errorData) => {
+
+                const request = new XMLHttpRequest();
+                request.addEventListener('readystatechange', () => {
+                    statusMessage.textContent = loadMessage;
+    
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+    
+                    if (request.status === 200) {
+                        outputData();
+                    } else {
+                        errorData(request.status); 
+                    }
+                });
+    
+                request.open('POST', './server.php');
+                request.setRequestHeader('Content-Type', 'application/json');
+    
+                request.send(JSON.stringify(body));
+                clearInputs();
+            };
+
+            postData(body, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+        });
+        form3.addEventListener('submit', () => {
+            event.preventDefault();
+            form.appendChild(statusMessage);
+
+            const formData = new FormData(form);
+            let body = {};
+
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+
+            const postData = (body, outputData, errorData) => {
+
+                const request = new XMLHttpRequest();
+                request.addEventListener('readystatechange', () => {
+                    statusMessage.textContent = loadMessage;
+    
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+    
+                    if (request.status === 200) {
+                        outputData();
+                    } else {
+                        errorData(request.status); 
+                    }
+                });
+    
+                request.open('POST', './server.php');
+                request.setRequestHeader('Content-Type', 'application/json');
+    
+                request.send(JSON.stringify(body));
+                clearInputs();
+            };
+
+            postData(body, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+        });
     };
 
     sendForm();
 
+    
 });
 
 
