@@ -254,7 +254,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
     }
 
-    countTimer ('15 march 2021');
+    countTimer ('15 april 2021');
 
     
     //  Меню
@@ -511,6 +511,14 @@ window.addEventListener('DOMContentLoaded', function(){
                 this.forms = document.querySelectorAll('form');
             }
             postData(form, body) {
+                return fetch('./server.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(body),
+                });
+
                 return new Promise((resolve, reject) => {
                     const request = new XMLHttpRequest();
                     request.addEventListener('readystatechange', () => {
@@ -547,8 +555,14 @@ window.addEventListener('DOMContentLoaded', function(){
                         formData.forEach((val, key) => {
                             body[key] = val;
                         });
+
                         this.postData(form, body)
-                            .then(() => statusMessage.textContent = this.successMessage)
+                            .then((response) => {
+                                if (response.status !== 200) {
+                                    throw new Error('status network not 200');
+                                }
+                                statusMessage.textContent = this.successMessage;
+                            })
                             .catch(error => {
                                 statusMessage.textContent = this.errorMessage;
                                 console.error(error);
