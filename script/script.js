@@ -561,6 +561,9 @@ window.addEventListener('DOMContentLoaded', function(){
                                 if (response.status !== 200) {
                                     throw new Error('status network not 200');
                                 }
+                                if (response.readyState !== 4) {
+                                    return;
+                                }
                                 statusMessage.textContent = this.successMessage;
                             })
                             .catch(error => {
