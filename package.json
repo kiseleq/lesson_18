@@ -3,11 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "addition.js",
-  "dependencies": {},
-  "devDependencies": {
-    "webpack": "^5.32.0",
-    "webpack-cli": "^4.6.0"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,11 +10,14 @@
     "type": "git",
     "url": "git+https://github.com/kiseleq/lesson_18.git"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/kiseleq/lesson_18/issues"
   },
-  "homepage": "https://github.com/kiseleq/lesson_18#readme"
+  "homepage": "https://github.com/kiseleq/lesson_18#readme",
+  "devDependencies": {
+    "webpack": "^5.33.2",
+    "webpack-cli": "^4.6.0"
+  }
 }

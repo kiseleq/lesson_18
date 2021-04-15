@@ -13,6 +13,13 @@ const showDots = () => {
 
     const createDots = () => {
         for (let i = 0; i < dots; i++) {
+            // let dot = document.createElement("li");
+            // dot.classList.add('active-dot');
+
+            // dot.append(dotsContainer);
+
+            // document.body.insertBefore(dotsContainer, dot);
+
             dotsContainer.insertAdjacentHTML('afterbegin', '<li class = "dot"></li>');
             let showDot = dotsContainer.querySelector('li');
         }

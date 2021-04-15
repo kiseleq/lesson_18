@@ -1,7 +1,3 @@
-window.addEventListener('DOMContentLoaded', function(){
-    'use strict';
-    
-// send-ajax-form
 class SendForm {
     constructor() {
         this.errorMessage = 'Что-то пошло не так...';
@@ -18,7 +14,24 @@ class SendForm {
             body: JSON.stringify(body),
         });
 
+        return new Promise((resolve, reject) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', () => {
+                if (request.readyState !== 4) {
+                    return;
+                }
+                if (request.status === 200) {
+                    resolve();
+                } else {
+                    reject(request.status);
+                }
+            });
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'application/json');
+            const formData = new FormData(form);
 
+            request.send(JSON.stringify(body));
+        });
     }
     sendAjax() {
         const statusMessage = document.createElement('div');
@@ -59,12 +72,5 @@ class SendForm {
 }
 
 const sendForm = new SendForm();
-sendForm.sendAjax();
 
-
-
-});
-
-
-
-
+export default sendForm;

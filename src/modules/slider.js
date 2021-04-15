@@ -3,6 +3,7 @@ const slider = () => {
         btn = document.querySelectorAll('.portfolio-btn'),
         dot = document.querySelectorAll('.dot'),
         slider = document.querySelector('#all-progects');
+        dot[0].classList.add('dot-active');
 
     let currentSlide = 0,
         interval = 0;
