@@ -67,7 +67,7 @@ function countTimer (deadline){
             timerSeconds.textContent = '00';
         }
     }
-        
+    updateClock();   
     setInterval(updateClock, 1000);
 
 }

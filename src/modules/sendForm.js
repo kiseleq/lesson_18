@@ -52,12 +52,7 @@ class SendForm {
                 }, 5000);
                 event.preventDefault();
 
-                // Проверка на пустую строку
-                // if (form.value.trim() === '') {
-                //     alert('Введите данные в поле(я) ввода');
-                //     return;
-                // }
-
+                form.classList.add('requried');
 
                 form.appendChild(statusMessage);
                 statusMessage.textContent = this.loadMessage;
