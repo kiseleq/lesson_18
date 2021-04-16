@@ -9,7 +9,6 @@ const changeImg = () => {
         });
 
         item.addEventListener('mouseleave', () => {
-            console.log(1);
             item.src = item.dataset.dataImgg;
             item.src = 'images/command/command-'+ (index + 1) + '.jpg';
         });

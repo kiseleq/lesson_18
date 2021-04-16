@@ -19,7 +19,7 @@ const calculator = () => {
             target.value = target.value.replace(/[^а-яА-Я ]/, '');
         } else if (target.closest('#form2-email')) {
             target.value = target.value.replace(/ +/, '');
-            target.value = target.value.replace(/[^a-zA-Z\@\_\-\~\.\!\*]/, '');
+            target.value = target.value.replace(/[^a-zA-Z\@\_\-\~\.\!\* ]/, '');
         } else if (target.closest('#form2-phone')) {
             target.value = target.value.replace(/[^1-9\+{1}]/, '');
         } else if (target.closest('#form2-message')) {

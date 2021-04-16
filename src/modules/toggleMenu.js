@@ -13,7 +13,6 @@ const toggleMenu = () => {
         
         if (target === closeBtn) {
             handlerMenu();
-            console.log(11);
         }
 
        menuItems.forEach((item, index) => {
