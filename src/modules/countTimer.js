@@ -68,7 +68,7 @@ function countTimer (deadline){
         }
     }
         
-    setInterval(updateClock, 0);
+    setInterval(updateClock, 1000);
 
 }
 
