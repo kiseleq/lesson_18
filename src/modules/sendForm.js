@@ -2,7 +2,7 @@ class SendForm {
     constructor() {
         this.errorMessage = 'Что-то пошло не так...';
         this.loadMessage = 'Загрузка...';
-        this.successMessage = 'Спасибо! Мы скоро с вами свяжимся!';
+        this.successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
         this.forms = document.querySelectorAll('form');
     }
     postData(form, body) {
@@ -35,14 +35,30 @@ class SendForm {
     }
     sendAjax() {
         const statusMessage = document.createElement('div');
+        statusMessage.classList.add('delete');
         statusMessage.style.cssText = `
               font-size: 2rem;
               color: #fff;
       `;
 
+        
+
         this.forms.forEach((form) => {
             form.addEventListener('submit', (event) => {
+                setTimeout(() => {
+                    let
+                    deleteElem = document.querySelector('.delete');
+                    deleteElem.remove();
+                }, 5000);
                 event.preventDefault();
+
+                // Проверка на пустую строку
+                // if (form.value.trim() === '') {
+                //     alert('Введите данные в поле(я) ввода');
+                //     return;
+                // }
+
+
                 form.appendChild(statusMessage);
                 statusMessage.textContent = this.loadMessage;
                 const formData = new FormData(form);
@@ -53,13 +69,21 @@ class SendForm {
 
                 this.postData(form, body)
                     .then((response) => {
+                        
                         if (response.status !== 200) {
                             throw new Error('status network not 200');
+                        } else {
+                            statusMessage.textContent = this.successMessage;
+                            
                         }
                         if (response.readyState !== 4) {
                             return;
+                        } else {
+                            statusMessage.textContent = this.successMessage;
                         }
                         statusMessage.textContent = this.successMessage;
+
+
                     })
                     .catch(error => {
                         statusMessage.textContent = this.errorMessage;
